@@ -1,5 +1,7 @@
 from itertools import product
 
+from ambars_sudoku_solver.helpers.types import SudokuCellLocations
+
 # Define 3X3 squares in grid
 cube_list = [[0, 1, 2], [3, 4, 5], [6, 7, 8]]
 
@@ -17,4 +19,4 @@ for x_and_y in product(cube_list, cube_list):
 # ]
 
 # Define array of ALL cell positions in sudoku grid
-ALL_XYS = list(product(range(9), range(9)))
+ALL_XYS: SudokuCellLocations = list(product(range(9), range(9)))

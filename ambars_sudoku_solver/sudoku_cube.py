@@ -31,21 +31,21 @@ class Sudoku:
         """
         Loop over all cells and for each empty cell get list of possible options
         """
-        suggestions = dict()
+        suggestions: SudokuSuggestions = {}
 
         # loop over all cells in sudoku square
-        for xy in ALL_XYS:
-            if not sudoku_square[xy[0]][xy[1]]:
+        for x_y in ALL_XYS:
+            if not sudoku_square[x_y[0]][x_y[1]]:
                 temp_values = []
 
                 # try each of the allowed numbers in chosen cell
                 for i in range(1, 10):
-                    sudoku_square[xy[0]][xy[1]] = i
+                    sudoku_square[x_y[0]][x_y[1]] = i
                     if Sudoku.check_solution(sudoku_square):
                         temp_values.append(i)
-                    sudoku_square[xy[0]][xy[1]] = 0
+                    sudoku_square[x_y[0]][x_y[1]] = 0
 
-                suggestions[xy] = temp_values
+                suggestions[x_y] = temp_values
         return suggestions
 
     @staticmethod

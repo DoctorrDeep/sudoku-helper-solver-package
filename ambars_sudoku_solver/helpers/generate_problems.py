@@ -4,20 +4,20 @@ import random
 from ambars_sudoku_solver.helpers import ALL_XYS
 from ambars_sudoku_solver.helpers.errors import SolverTimeoutError, UnknownSolutionError
 from ambars_sudoku_solver.helpers.timer import timer
-from ambars_sudoku_solver.helpers.types import Level
+from ambars_sudoku_solver.helpers.types import Level, SudokuCellLocations, SudokuSquare
 from ambars_sudoku_solver.settings import (
     COUNT_OF_CELLS_TO_FILL,
     MAX_SUGGESTIONS_DIFFICULT,
     MAX_SUGGESTIONS_EASY,
     TIMEOUT_FOR_RECURSION,
 )
-from ambars_sudoku_solver.solutions.backtracking_solution import solve_square
+from ambars_sudoku_solver.solvers.backtracking_solution import solve_square
 from ambars_sudoku_solver.sudoku_cube import Sudoku
 
-MAX_COUNT_OF_CELLS_TO_EMPTY = 30
-MAX_SUGGESTION_SETTINGS = {
-    Level.easy: MAX_SUGGESTIONS_EASY,
-    Level.difficult: MAX_SUGGESTIONS_DIFFICULT,
+MAX_COUNT_OF_CELLS_TO_EMPTY: int = 30
+MAX_SUGGESTION_SETTINGS: dict[Level, int] = {
+    Level.EASY: MAX_SUGGESTIONS_EASY,
+    Level.DIFFICULT: MAX_SUGGESTIONS_DIFFICULT,
 }
 
 
@@ -33,8 +33,8 @@ def create_sudoku_problem(level: Level) -> Sudoku:
         """
         Generate an empty sudoku square and fill a few spots in randomly but without breaking rules
         """
-        empty_square = [[0] * 9 for _ in range(9)]
-        spots_filled = 0
+        empty_square: SudokuSquare = [[0] * 9 for _ in range(9)]
+        spots_filled: int = 0
         while spots_filled <= COUNT_OF_CELLS_TO_FILL:
             rand_xy = random.choice(ALL_XYS)
             empty_square[rand_xy[0]][rand_xy[1]] = random.choice(range(1, 10))
@@ -52,7 +52,7 @@ def create_sudoku_problem(level: Level) -> Sudoku:
         """
 
         try:
-            sudoku = generate_empty_square_with_random_fills()
+            sudoku: Sudoku = generate_empty_square_with_random_fills()
             sudoku.run_solver(solve_square)
         except SolverTimeoutError:
             # If timeout reached, try one more time with a new square.
@@ -60,13 +60,13 @@ def create_sudoku_problem(level: Level) -> Sudoku:
             sudoku.run_solver(solve_square, timeout=TIMEOUT_FOR_RECURSION + 5)
         return sudoku
 
-    sudoku_square = generate_sudoku_square()
+    sudoku_square: Sudoku = generate_sudoku_square()
     if sudoku_square.solutions:
         sudoku_square.sudoku_square = random.choice(sudoku_square.solutions)
     else:
         raise UnknownSolutionError("Generated problem with empty solutions.")
     sudoku_square.sudoku_square_copy = copy.deepcopy(sudoku_square.sudoku_square)
-    elements_to_empty = random.sample(ALL_XYS, MAX_COUNT_OF_CELLS_TO_EMPTY)
+    elements_to_empty: SudokuCellLocations = random.sample(ALL_XYS, MAX_COUNT_OF_CELLS_TO_EMPTY)
     for loc in elements_to_empty:
         sudoku_square.sudoku_square[loc[0]][loc[1]] = 0
         sudoku_square.sudoku_square_copy[loc[0]][loc[1]] = 0
@@ -75,5 +75,5 @@ def create_sudoku_problem(level: Level) -> Sudoku:
             return sudoku_square
 
     raise UnknownSolutionError(
-        "Number of suggestions remains low even after removing %i out of 81 cells" % MAX_COUNT_OF_CELLS_TO_EMPTY
+        f"Number of suggestions remains low even after removing {MAX_COUNT_OF_CELLS_TO_EMPTY} out of 81 cells"
     )
