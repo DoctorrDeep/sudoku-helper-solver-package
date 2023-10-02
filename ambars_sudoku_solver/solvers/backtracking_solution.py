@@ -14,12 +14,12 @@ def check_insert(sudoku_square: SudokuSquare, x: int, y: int, val_to_insert: int
     Check if inserting `val_to_insert` into position x row, y column
     is going to yield a valid sudoku block. Incomplete is valid too.
     """
-    new_sudoku_square = copy.deepcopy(sudoku_square)
+    new_sudoku_square: SudokuSquare = copy.deepcopy(sudoku_square)
     new_sudoku_square[x][y] = val_to_insert
     return Sudoku.check_solution(new_sudoku_square)
 
 
-def solve_square(sudoku: Sudoku, start_time: float, timeout: float = TIMEOUT_FOR_RECURSION):
+def solve_square(sudoku: Sudoku, start_time: float, timeout: float = TIMEOUT_FOR_RECURSION) -> None:
     """
     Backtracking algorithm where valid solutions are appended to
     the solutions property of Sudoku object.
@@ -37,14 +37,14 @@ def solve_square(sudoku: Sudoku, start_time: float, timeout: float = TIMEOUT_FOR
         if not sudoku.sudoku_square_copy[x][y]:
             for i in sudoku.suggestions[(x, y)]:
                 if len(sudoku.solutions) > MAX_SOLUTIONS:
-                    return
+                    return None
                 # If valid option found fill in the cell and
                 # try arriving at a solution with the use of recursion
                 if check_insert(sudoku.sudoku_square_copy, x, y, i):
                     sudoku.sudoku_square_copy[x][y] = i
                     solve_square(sudoku, start_time, timeout)
                     sudoku.sudoku_square_copy[x][y] = 0
-            return
+            return None
 
     if sudoku.sudoku_square_copy not in sudoku.solutions:
         sudoku.solutions.append(copy.deepcopy(sudoku.sudoku_square_copy))

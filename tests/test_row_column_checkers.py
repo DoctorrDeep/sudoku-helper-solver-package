@@ -2,7 +2,7 @@ import pytest
 
 from ambars_sudoku_solver.sudoku_cube import Sudoku
 
-test_data = [
+test_data: list[tuple[range | list[int], bool]] = [
     (range(1, 10), True),
     (range(2, 11), False),
     (range(9), True),

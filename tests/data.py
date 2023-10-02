@@ -1,4 +1,6 @@
-EASY_SUDOKU = [
+from ambars_sudoku_solver.helpers.types import SudokuSquare
+
+EASY_SUDOKU: SudokuSquare = [
     [5, 7, 1, 3, 4, 9, 6, 2, 8],
     [8, 3, 9, 6, 2, 5, 7, 4, 1],
     [2, 6, 0, 8, 7, 1, 9, 3, 5],
@@ -10,7 +12,7 @@ EASY_SUDOKU = [
     [7, 2, 8, 5, 1, 3, 4, 9, 6],
 ]
 
-SOLVED_SUDOKU = [
+SOLVED_SUDOKU: SudokuSquare = [
     [5, 7, 1, 3, 4, 9, 6, 2, 8],
     [8, 3, 9, 6, 2, 5, 7, 4, 1],
     [2, 6, 4, 8, 7, 1, 9, 3, 5],
@@ -22,7 +24,7 @@ SOLVED_SUDOKU = [
     [7, 2, 8, 5, 1, 3, 4, 9, 6],
 ]
 
-UNSOLVABLE_SUDOKU = [
+UNSOLVABLE_SUDOKU: SudokuSquare = [
     [0, 0, 0, 0, 0, 0, 0, 0, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 1],
     [0, 0, 0, 0, 0, 0, 0, 0, 1],

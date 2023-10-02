@@ -1,11 +1,12 @@
 import pytest
 
 from ambars_sudoku_solver.helpers.errors import UnknownSolutionError
-from ambars_sudoku_solver.solutions.no_backtracking_solution import try_fill_in
+from ambars_sudoku_solver.helpers.types import SudokuCellLocation
+from ambars_sudoku_solver.solvers.no_backtracking_solution import try_fill_in
 from ambars_sudoku_solver.sudoku_cube import Sudoku
 from tests.data import EASY_SUDOKU, SOLVED_SUDOKU, UNSOLVABLE_SUDOKU
 
-SUDOKU = Sudoku(EASY_SUDOKU)
+SUDOKU: Sudoku = Sudoku(EASY_SUDOKU)
 SUDOKU.run_solver(try_fill_in)
 
 test_solution_and_length_of_suggestions = [
@@ -14,7 +15,7 @@ test_solution_and_length_of_suggestions = [
     (len(SUDOKU.suggestions.keys()), 3),
 ]
 
-test_suggestions = [
+test_suggestions: list[tuple[SudokuCellLocation, list[int]]] = [
     ((2, 2), [4]),
     ((5, 6), [2]),
     ((6, 1), [9]),
